@@ -21,11 +21,11 @@ With TestMu AI (Formerly LambdaTest), you can run C# NUnit Selenium tests at sca
 - NuGet
 - A TestMu AI (Formerly LambdaTest) account with HyperExecute access
 
-Download the Concierge binary corresponding to the host operating system. It is recommended to download the binary in the project's parent directory.
+Download the HyperExecute CLI binary corresponding to the host operating system. It is recommended to download the binary in the project's parent directory.
 
-* Mac: https://downloads.lambdatest.com/concierge/darwin/concierge
-* Linux: https://downloads.lambdatest.com/concierge/linux/concierge
-* Windows: https://downloads.lambdatest.com/concierge/windows/concierge.exe
+* Mac: https://downloads.lambdatest.com/hyperexecute/darwin/hyperexecute
+* Linux: https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
+* Windows: https://downloads.lambdatest.com/hyperexecute/windows/hyperexecute.exe
 
 ### Setup
 
@@ -87,7 +87,7 @@ The matrix defines a list of test classes to run in parallel. The `pre` directiv
 Run the following command to trigger matrix tests:
 
 ```bash
-./concierge --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
+./hyperexecute --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
 ```
 
 ## Running C# Tests Using Auto-Split Execution
@@ -120,7 +120,7 @@ pre:
 testDiscovery:
   type: raw
   mode: static
-  command: dotnet run --project HyperTestDiscoverer/HyperTestDiscoverer.csproj /Users/lambdatest/Documents/HyperTestDemos/HyperTestDemo/bin/Debug/netcoreapp3.1/HyperTestDemo.dll
+  command: dotnet run --project HyperTestDiscoverer/HyperTestDiscoverer.csproj HyperTestDemo/bin/Debug/netcoreapp3.1/HyperTestDemo.dll
 
 testRunnerCommand: dotnet test HyperTestDemos.sln --filter FullyQualifiedName=$test
 ```
@@ -130,7 +130,7 @@ Global timeout is set to 150 minutes, concurrency is set to 10, and `retryOnFail
 Run the following command to trigger auto-split tests:
 
 ```bash
-./concierge --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
+./hyperexecute --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
 ```
 
 ### Run tests
@@ -138,13 +138,13 @@ Run the following command to trigger auto-split tests:
 **Matrix mode:**
 
 ```bash
-./concierge --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
+./hyperexecute --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
 ```
 
 **Auto-split mode:**
 
 ```bash
-./concierge --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
+./hyperexecute --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
 ```
 
 Visit the [HyperExecute Automation Dashboard](https://automation.lambdatest.com/hyperexecute) to check the status of execution.

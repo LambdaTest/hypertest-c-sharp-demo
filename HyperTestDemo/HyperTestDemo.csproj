@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <!-- deliberately the oldest TFM above the HyperExecute .NET runner's floor (net5+),
+         so this sample exercises older-runtime compatibility; the nunit-selenium sample
+         covers current net8.0 -->
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

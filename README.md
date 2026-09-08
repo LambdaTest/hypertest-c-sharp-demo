@@ -17,7 +17,10 @@ With TestMu AI (Formerly LambdaTest), you can run C# NUnit Selenium tests at sca
 
 ### Prerequisites
 
-- .NET SDK 8.0 or later
+- .NET SDK 6.0 or later (the project targets `net6.0` deliberately — this sample
+  exercises HyperExecute's older-runtime compatibility; see the
+  [nunit-selenium sample](https://github.com/LambdaTest/nunit-selenium-hyperexecute-sample)
+  for current net8.0)
 - A TestMu AI (Formerly LambdaTest) account with HyperExecute access
 
 Download the HyperExecute CLI binary corresponding to the host operating system. It is recommended to download the binary in the project's parent directory.

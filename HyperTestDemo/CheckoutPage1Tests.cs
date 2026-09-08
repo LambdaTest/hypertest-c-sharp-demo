@@ -4,7 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium.Support.UI;
 
 [assembly: Parallelizable(ParallelScope.All)]
-[assembly: LevelOfParallelism(25)]
+[assembly: LevelOfParallelism(2)]
 namespace HyperTestDemo
 {
 [TestFixture]

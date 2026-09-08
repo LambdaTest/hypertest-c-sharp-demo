@@ -17,8 +17,7 @@ With TestMu AI (Formerly LambdaTest), you can run C# NUnit Selenium tests at sca
 
 ### Prerequisites
 
-- .NET Core 3.1 or later
-- NuGet
+- .NET SDK 8.0 or later
 - A TestMu AI (Formerly LambdaTest) account with HyperExecute access
 
 Download the HyperExecute CLI binary corresponding to the host operating system. It is recommended to download the binary in the project's parent directory.
@@ -52,102 +51,44 @@ set LT_USERNAME="YOUR_USERNAME"
 set LT_ACCESS_KEY="YOUR_ACCESS_KEY"
 ```
 
-## Running C# Tests Using the Matrix Strategy
+## Running C# Tests with Remote Test Discovery (v0.2)
 
-Matrix YAML file (`yaml/hypertest_demo_matrix_sample.yaml`) in the repo contains the following configuration:
-
-```yaml
----
-version: 0.1
-globalTimeout: 90
-testSuiteTimeout: 90
-testSuiteStep: 90
-
-runson: win
-
-matrix:
-  project: ["HyperTestDemos.sln"]
-  class: ["CheckoutPage1Tests", "CheckoutPage2Tests", "CheckoutPage3Tests",
-          "CheckoutPage4Tests", "CheckoutPage5Tests", "CheckoutPage6Tests",
-          "CheckoutPage7Tests", "CheckoutPage8Tests", "CheckoutPage9Tests",
-          "CheckoutPage10Tests", "DemoTests"]
-
-pre:
-  - nuget locals all -clear
-  - dotnet build HyperTestDemos.sln -c Debug
-
-testSuites:
-  - dotnet test $project --filter Name~$class
-```
-
-Global timeout, testSuite timeout, and testSuiteStep timeout are set to 90 minutes. The target platform is set to Windows (`runson: win`).
-
-The matrix defines a list of test classes to run in parallel. The `pre` directive clears the NuGet cache and builds the solution before test execution.
-
-Run the following command to trigger matrix tests:
-
-```bash
-./hyperexecute --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
-```
-
-## Running C# Tests Using Auto-Split Execution
-
-Auto-split YAML file (`yaml/hypertest_demo_autosplit_sample.yaml`) in the repo contains the following configuration:
+The config (`yaml/hyperexecute_remote_v2.yaml`) uses HyperExecute's framework-based
+remote test discovery: HyperExecute's .NET runner discovers the NUnit tests from
+the built assembly on the worker — no separate discoverer project, grep command,
+or `testRunnerCommand` needed.
 
 ```yaml
 ---
-version: 0.1
-globalTimeout: 150
-testSuiteTimeout: 150
-testSuiteStep: 150
-
-runson: win
+version: "0.2"
+runson: linux
 
 autosplit: true
-retryOnFailure: true
-
-maxRetries: 5
-concurrency: 10
-
-mergeArtifacts: true
-
-project: HyperTestDemos.sln
+concurrency: 5
 
 pre:
-  - nuget locals all -clear
-  - dotnet build HyperTestDemos.sln -c Debug
+  - dotnet build HyperTestDemos.sln -c Release
 
-testDiscovery:
-  type: raw
-  mode: static
-  command: dotnet run --project HyperTestDiscoverer/HyperTestDiscoverer.csproj HyperTestDemo/bin/Debug/netcoreapp3.1/HyperTestDemo.dll
-
-testRunnerCommand: dotnet test HyperTestDemos.sln --filter FullyQualifiedName=$test
+framework:
+  name: dotnet/nunit
+  discoveryMode: remote   # dotnet/* runners are remote-discovery only
+  discoveryType: class    # one shard per test class (10 classes); use method for per-test shards
+  flags:
+    - --project
+    - HyperTestDemo/HyperTestDemo.csproj
 ```
 
-Global timeout is set to 150 minutes, concurrency is set to 10, and `retryOnFailure` is set to true with up to 5 retries. The `testDiscovery` command uses a custom discoverer to locate test class names. Each discovered test class is then run via `dotnet test` with a fully qualified name filter.
-
-Run the following command to trigger auto-split tests:
-
-```bash
-./hyperexecute --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
-```
+With `discoveryType: class`, HyperExecute discovers the 10 checkout test classes
+and auto-splits them across 5 concurrent workers. Switch to `discoveryType: method`
+to shard at individual test level (100 tests).
 
 ### Run tests
 
-**Matrix mode:**
-
 ```bash
-./hyperexecute --config --verbose -i yaml/hypertest_demo_matrix_sample.yaml
+./hyperexecute --user $LT_USERNAME --key $LT_ACCESS_KEY --config yaml/hyperexecute_remote_v2.yaml
 ```
 
-**Auto-split mode:**
-
-```bash
-./hyperexecute --config --verbose -i yaml/hypertest_demo_autosplit_sample.yaml
-```
-
-Visit the [HyperExecute Automation Dashboard](https://automation.lambdatest.com/hyperexecute) to check the status of execution.
+Visit the [HyperExecute Dashboard](https://hyperexecute.lambdatest.com/hyperexecute) to check the status of execution.
 
 View results on your TestMu AI dashboard.
 

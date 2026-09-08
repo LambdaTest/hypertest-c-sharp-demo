@@ -1,0 +1,38 @@
+---
+version: "0.2"
+runson: linux
+
+autosplit: true
+concurrency: 5
+
+globalTimeout: 90
+testSuiteTimeout: 90
+testSuiteStep: 90
+
+# Selenium shards emit output in batches; keep the idle monitor from
+# killing a quiet-but-working scenario.
+idleTimeout: 900
+
+retryOnFailure: true
+maxRetries: 1
+
+pre:
+  - dotnet build HyperTestDemos.sln -c Release
+
+# Framework-based remote test discovery: HyperExecute's .NET runner discovers
+# NUnit tests from the built assembly on the worker — no separate discoverer
+# project, grep command, or testRunnerCommand needed.
+framework:
+  name: dotnet/nunit
+  discoveryMode: remote   # dotnet/* runners are remote-discovery only
+  discoveryType: class    # one shard per test class (10 classes); use method for per-test shards
+  defaultReports: false   # runner posts results via the HyperExecute callback
+  flags:
+    - --project
+    - HyperTestDemo/HyperTestDemo.csproj
+
+jobLabel: [selenium-nunit, linux, remote-discovery, v0.2]
+
+runtime:
+  language: dotnet
+  version: "8.0"

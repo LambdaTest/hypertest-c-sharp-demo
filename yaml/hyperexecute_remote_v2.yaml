@@ -26,9 +26,8 @@ framework:
   name: dotnet/nunit
   discoveryMode: remote   # dotnet/* runners are remote-discovery only
   discoveryType: class    # one shard per test class (10 classes); use method for per-test shards
-  flags:
-    - --project
-    - HyperTestDemo/HyperTestDemo.csproj
+  # single-project repo: the runner locates the csproj and built assembly itself;
+  # multi-project repos pass flags: [--project, <path-to-csproj>]
 
 jobLabel: [csharp-demo, net6.0, linux, remote-discovery, v0.2]
 

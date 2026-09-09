@@ -30,7 +30,7 @@ framework:
     - --project
     - HyperTestDemo/HyperTestDemo.csproj
 
-jobLabel: [selenium-nunit, linux, remote-discovery, v0.2]
+jobLabel: [csharp-demo, net6.0, linux, remote-discovery, v0.2]
 
 # net6.0 on purpose: this sample pins the oldest supported runtime path;
 # the nunit-selenium sample covers current net8.0.

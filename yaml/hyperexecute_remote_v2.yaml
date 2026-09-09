@@ -26,7 +26,6 @@ framework:
   name: dotnet/nunit
   discoveryMode: remote   # dotnet/* runners are remote-discovery only
   discoveryType: class    # one shard per test class (10 classes); use method for per-test shards
-  defaultReports: false   # runner posts results via the HyperExecute callback
   flags:
     - --project
     - HyperTestDemo/HyperTestDemo.csproj

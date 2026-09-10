@@ -348,3 +348,15 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# HyperExecute CLI artifacts
+hyperexecute
+hyperexecute-cli.log
+.updatedhyperexecute.yaml
+.updatedHypertest.yaml
+.hyperexecute/
+hyperexecute-code-*.zip
+concierge
+concierge.exe
+conciergeupdate
+.DS_Store
